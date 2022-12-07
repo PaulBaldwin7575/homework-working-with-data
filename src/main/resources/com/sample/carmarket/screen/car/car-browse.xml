@@ -1,20 +1,24 @@
 <window xmlns="http://jmix.io/schema/ui/window"
         xmlns:c="http://jmix.io/schema/ui/jpql-condition"
-        caption="msg://manufacturerBrowse.caption"
+        caption="msg://carBrowse.caption"
         focusComponent="table">
     <data>
-        <collection id="manufacturersDc"
-                    class="com.sample.carmarket.entity.Manufacturer">
-            <fetchPlan extends="_base"/>
-            <loader id="manufacturersDl">
+        <collection id="carsDc"
+                    class="com.sample.carmarket.entity.Car">
+            <fetchPlan extends="_base">
+                <property name="model" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="carsDl">
                 <query>
-                    <![CDATA[select e from Manufacturer e]]>
+                    <![CDATA[select e from Car e]]>
                 </query>
             </loader>
         </collection>
-        <instance id="manufacturerDc"
-                  class="com.sample.carmarket.entity.Manufacturer">
-            <fetchPlan extends="_base"/>
+        <instance id="carDc"
+                  class="com.sample.carmarket.entity.Car">
+            <fetchPlan extends="_base">
+                <property name="model" fetchPlan="_base"/>
+            </fetchPlan>
             <loader/>
         </instance>
     </data>
@@ -30,17 +34,23 @@
     <layout>
         <split id="split" height="100%" orientation="horizontal" reversePosition="true" width="100%">
             <vbox id="lookupBox" expand="table" height="100%" margin="false,true,false,false" spacing="true">
-                <table id="table"
-                       width="100%"
-                       dataContainer="manufacturersDc">
+                <filter id="filter" dataLoader="carsDl">
+                    <properties include=".*"/>
+                </filter>
+                <groupTable id="table"
+                            width="100%"
+                            dataContainer="carsDc">
                     <actions>
                         <action id="create" type="create"/>
                         <action id="edit" type="edit"/>
                         <action id="remove" type="remove"/>
                     </actions>
                     <columns>
-                        <column id="name"/>
-                        <column id="country"/>
+                        <column id="registrationNumber"/>
+                        <column id="model"/>
+                        <column id="productionYear"/>
+                        <column id="status"/>
+                        <column id="dateOfSale"/>
                     </columns>
                     <simplePagination/>
                     <buttonsPanel id="buttonsPanel"
@@ -48,10 +58,8 @@
                         <button id="createBtn" action="table.create"/>
                         <button id="editBtn" action="table.edit"/>
                         <button id="removeBtn" action="table.remove"/>
-                        <button id="tableCalculateCarsBtn" caption="Calculate cars"/>
-
                     </buttonsPanel>
-                </table>
+                </groupTable>
                 <hbox id="lookupActions" spacing="true" visible="false">
                     <button action="lookupSelectAction"/>
                     <button action="lookupCancelAction"/>
@@ -59,10 +67,18 @@
             </vbox>
             <vbox id="editBox" height="100%" margin="false,false,false,true" expand="fieldGroupBox" spacing="true">
                 <scrollBox id="fieldGroupBox">
-                    <form id="form" dataContainer="manufacturerDc">
+                    <form id="form" dataContainer="carDc">
                         <column width="350px">
-                            <textField id="nameField" property="name"/>
-                            <textField id="countryField" property="country"/>
+                            <textField id="registrationNumberField" property="registrationNumber"/>
+                            <entityPicker id="modelField" property="model">
+                                <actions>
+                                    <action id="entityLookup" type="entity_lookup"/>
+                                    <action id="entityClear" type="entity_clear"/>
+                                </actions>
+                            </entityPicker>
+                            <textField id="productionYearField" property="productionYear"/>
+                            <comboBox id="statusField" property="status"/>
+                            <dateField id="dateOfSaleField" property="dateOfSale"/>
                         </column>
                     </form>
                 </scrollBox>
