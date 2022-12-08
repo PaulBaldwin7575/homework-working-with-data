@@ -58,6 +58,7 @@
                         <button id="createBtn" action="table.create"/>
                         <button id="editBtn" action="table.edit"/>
                         <button id="removeBtn" action="table.remove"/>
+                        <button id="soldBtn" caption="Mark as Sold"/>
                     </buttonsPanel>
                 </groupTable>
                 <hbox id="lookupActions" spacing="true" visible="false">

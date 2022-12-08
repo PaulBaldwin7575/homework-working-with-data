@@ -3,16 +3,16 @@ package com.sample.carmarket.app;
 import com.sample.carmarket.entity.Car;
 import com.sample.carmarket.entity.EngineType;
 import com.sample.carmarket.entity.Manufacturer;
-import com.sample.carmarket.entity.Model;
+import com.sample.carmarket.entity.Status;
 import io.jmix.core.DataManager;
-import io.jmix.ui.Notifications;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
-public class CalculateCarsService {
+public class CarService {
 
     @Autowired
     private DataManager dataManager;
@@ -34,9 +34,18 @@ public class CalculateCarsService {
                 countOfElectricCars++;
             }
         }
-
         return "Electric cars: " + countOfElectricCars
                 + ", gasoline cars: " + countOfGasCars;
+    }
 
+    public String markAsSold(Car car) {
+        if (car.getStatus().equals(Status.SOLD)) {
+            return "Already Sold";
+        } else {
+            car.setStatus(Status.SOLD);
+            car.setDateOfSale(LocalDate.now());
+            var value = dataManager.save(car);
+            return "Done";
+        }
     }
 }

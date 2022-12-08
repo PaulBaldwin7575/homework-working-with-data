@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @JmixEntity
@@ -44,15 +44,14 @@ public class Car {
     private Integer status;
 
     @Column(name = "DATE_OF_SALE")
-    @Temporal(TemporalType.DATE)
-    private Date dateOfSale;
+    private LocalDate dateOfSale;
 
-    public Date getDateOfSale() {
-        return dateOfSale;
+    public void setDateOfSale(LocalDate dateOfSale) {
+        this.dateOfSale = dateOfSale;
     }
 
-    public void setDateOfSale(Date dateOfSale) {
-        this.dateOfSale = dateOfSale;
+    public LocalDate getDateOfSale() {
+        return dateOfSale;
     }
 
     public Status getStatus() {
